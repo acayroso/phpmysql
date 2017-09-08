@@ -61,11 +61,13 @@
 //                                    }
                                    
                                 // Close Connection   
-                                   mysqli_close($db_connection);
+                                //   mysqli_close($db_connection);
                             ?>
                         
-                        <li>Displaying data in html-table</li>
                     </ul>
+                
+                <p>Displaying data in html-table</p>
+                
                             <table style="width:100%">
                                 <tr>
                                   <th>ID</th>
@@ -90,8 +92,40 @@
                                 
                             </table>
                         
-               
+                <p>Adding data to table</p>
+                
+                <form name="insert_record" action="index.php" method="POST">
+                    Name: <input type="text" name="name" placeholder="Enter your full name"><br/><br/>
+                    Email: <input type="text" name="email" placeholder="Enter a valid email"><br/><br/>
+                    Employee Number: <input type="text" name="emp_number" placeholder="8 digit employee number"><br/><br/>
+                    Active: <input type="radio" name="status" value="active">Active
+                            <input type="radio" name="status" value="inactive">Inactive<br/><br/>
+                    <button type="submit" name="submit">Submit</button>
+                </form>
                     
+                <?php
+                    var_dump($_POST);
+                    
+                    $name = $_POST['name'];
+                    $email = $_POST['email'];
+                    $emp_number = $_POST['emp_number'];
+                    
+                    if($_POST['status'] === 'active'){
+                        $status = 1;
+                    }else{
+                        $status = 0;
+                    }
+                            
+                    $insert_query = "INSERT INTO employee(name,email,emp_number,active) "
+                            . "VALUES ('{$name}','{$email}','{$emp_number}','{$status}');";
+                    
+                    if(mysqli_query($db_connection, $insert_query)){
+                        echo "New record inserted";
+                    }else{
+                        die("Database query failed: " . mysqli_error($db_connection));
+                    }
+                ?>
+                
             </section>
 
     </body>
